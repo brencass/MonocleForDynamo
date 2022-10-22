@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
@@ -187,5 +190,144 @@ namespace MonocleViewExtension.Utilities
                 return ex.Types.Where(x => x != null);
             }
         }
+    }
+
+    internal static class VersionCheckerUtils
+    {
+        ///<summary>
+        //Checks github repository for latest release version and returns the version number
+        /// </summary>
+        public static string MonocleGitHubRepoVerion()
+        {
+            const string MonocleRepoAddress = "https://api.github.com/repos/johnpierson/MonocleForDynamo/releases/latest";
+            string MonocleStreamOutput;
+
+            try
+            {
+                HttpWebRequest siteRequest = (HttpWebRequest)System.Net.WebRequest.Create(MonocleRepoAddress);
+                siteRequest.Method = WebRequestMethods.Http.Get;
+                siteRequest.Accept = "application/json";
+                siteRequest.ContentType = "application/json; charset=utf-8";
+                siteRequest.UserAgent = "(Anything other than an empty string)";
+
+                var siteResponse = siteRequest.GetResponse();
+
+                using (var sr = new StreamReader(siteResponse.GetResponseStream()))
+                {
+                    MonocleStreamOutput = sr.ReadToEnd();
+                }
+
+                dynamic JsonOutput = JsonConvert.DeserializeObject(MonocleStreamOutput);
+
+                return JsonOutput.tag_name.Value;
+            }
+            catch
+            {
+                return "Cannot Access Webpage";
+            }
+        }
+
+        ///<summary>
+        //Checks Dynamo Package Website for latest release version and returns the version number
+        /// </summary>
+        public static string MonoclePackageWebsiteVerion()
+        {
+            const string MonoclePackageAddress = "https://dynamopackages.com/package/5bb7c639452aacde53000059/";
+            string MonocleStreamOutput;
+
+            try
+            {
+                HttpWebRequest siteRequest = (HttpWebRequest)System.Net.WebRequest.Create(MonoclePackageAddress);
+                siteRequest.Method = WebRequestMethods.Http.Get;
+                siteRequest.Accept = "application/json";
+                siteRequest.ContentType = "application/json; charset=utf-8";
+
+                var siteResponse = siteRequest.GetResponse();
+
+                using (var sr = new StreamReader(siteResponse.GetResponseStream()))
+                {
+                    MonocleStreamOutput = sr.ReadToEnd();
+                }
+
+                dynamic JsonOutput = JsonConvert.DeserializeObject(MonocleStreamOutput);
+
+                string packwebsiteVerionOutput = "";
+                string jsonContentLatestVersion = JsonOutput.content.latest_version_update.Value.ToString();
+
+                foreach (var jsonVersions in JsonOutput.content.versions)
+                {
+                    if (jsonVersions.created.Value.ToString() == jsonContentLatestVersion)
+                    {
+                        packwebsiteVerionOutput = jsonVersions.version.Value;
+                    }
+                }
+                return packwebsiteVerionOutput;
+            }
+            catch
+            {
+                return "Cannot Access Webpage";
+            }
+        }
+
+
+
+        public static string AssembleyVersionComparer(Version assemblyVer, string StringVerToCompare)
+        {
+            Version compareVersion = Version.Parse(StringVerToCompare);
+
+            int comparedOutput = assemblyVer.CompareTo(compareVersion);
+
+            if (comparedOutput < 0)
+            {
+                /// Assembly is less than released version
+                /// 
+
+                return "Your version of Monocle is out of date and needs updating";
+
+            }
+            else if (comparedOutput > 0)
+            {
+                /// Assembly is Greater than released version
+                return "Ohhh...Your a lucky one getting Monocle early.";
+            }
+            else
+            {
+                /// Assembly is equal to released version
+
+                return "Your Installed version of Monocle is up to date.";
+            }
+
+        }
+
+        public static string OnlineVersionComparer(string GitHubVersion, string PackageWebsiteVersion)
+        {
+            Version version1 = Version.Parse(GitHubVersion);
+
+            Version version2 = Version.Parse(PackageWebsiteVersion);
+
+            int comparedOutput = version1.CompareTo(version2);
+
+            if (comparedOutput < 0)
+            {
+                /// GitHubVersion is less than PackageWebsiteVersion
+                /// 
+
+                return "Package Website has the latest version";
+
+            }
+            else if (comparedOutput > 0)
+            {
+                /// GitHubVersion is Greater than PackageWebsiteVersion
+                return "Github Website has the latest version";
+            }
+            else
+            {
+                /// GitHubVersion is equal to PackageWebsiteVersion
+
+                return "Both Github and Package Website have the same version";
+            }
+
+        }
+
     }
 }

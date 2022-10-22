@@ -23,17 +23,19 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="36"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="48"/>
             <RowDefinition Height="48"/>
         </Grid.RowDefinitions>
         <Image Grid.Column="0" Grid.ColumnSpan="4" Source="/MonocleViewExtension;component/Resources/monocleLogoRoundedSquare.png"/>
 
         <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" HorizontalAlignment="Center" Content="Monocle for Dynamo" Foreground="White" FontFamily="Comic Sans MS" FontWeight="Bold" FontSize="18"/>
+        
+        <!--
         <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" Content="{Binding MonocleVersion}" Foreground="White" FontFamily="Comic Sans MS" FontStyle="Italic" FontSize="10"/>
-
-        <Separator  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" Background="#FFB8321A"></Separator>
+        -->
+        <Separator  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" Background="#FFB8321A" VerticalAlignment="Bottom"></Separator>
 
         <Image Grid.Column="1" Grid.Row="4" Source="/MonocleViewExtension;component/Resources/about_github.png"/>
         <TextBlock Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8 0" Foreground="White" FontSize="16">           
@@ -50,6 +52,15 @@
                 socials.
             </Hyperlink>
         </TextBlock>
+
+        <TextBlock x:Name="MonocleGithubVerText" Text="Github Version: " Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="8,0,0,0" Foreground="White" FontFamily="Comic Sans MS" FontStyle="Italic" FontSize="10"/>
+        <TextBlock x:Name="MonoclePackageVerText" Text="Package Manager Version: " Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="White" FontFamily="Comic Sans MS" FontStyle="Italic" FontSize="10"/>
+
+        <TextBlock x:Name="MonocleInstalledVerText" Text="Installed Version :" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8,0,0,0" Foreground="White" FontFamily="Comic Sans MS" FontStyle="Italic" FontSize="10"/>
+
+
+        <TextBlock x:Name="MonocleVerText" Text="" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="White" FontFamily="Comic Sans MS" FontStyle="Italic" FontSize="10"/>
+
 
     </Grid>
 </Window>
