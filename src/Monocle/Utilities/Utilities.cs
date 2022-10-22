@@ -195,7 +195,7 @@ namespace MonocleViewExtension.Utilities
     internal static class VersionCheckerUtils
     {
         ///<summary>
-        //Checks github repository for latest release version and returns the version number
+        //Checks github repository for latest release version and returns the version number as a string
         /// </summary>
         public static string MonocleGitHubRepoVerion()
         {
@@ -228,7 +228,7 @@ namespace MonocleViewExtension.Utilities
         }
 
         ///<summary>
-        //Checks Dynamo Package Website for latest release version and returns the version number
+        //Checks Dynamo Package Website for latest release version and returns the version number as a string
         /// </summary>
         public static string MonoclePackageWebsiteVerion()
         {
@@ -270,7 +270,9 @@ namespace MonocleViewExtension.Utilities
         }
 
 
-
+        /// <summary>
+        /// Used to check Assembly version against a string input
+        /// </summary>
         public static string AssembleyVersionComparer(Version assemblyVer, string StringVerToCompare)
         {
             Version compareVersion = Version.Parse(StringVerToCompare);
@@ -299,6 +301,9 @@ namespace MonocleViewExtension.Utilities
 
         }
 
+        /// <summary>
+        /// Used to check Github Version against Package Manager Version
+        /// </summary>
         public static string OnlineVersionComparer(string GitHubVersion, string PackageWebsiteVersion)
         {
             Version version1 = Version.Parse(GitHubVersion);
